@@ -1,0 +1,18 @@
+AIDLC Plugin
+Copyright (c) 2026 Seungwoo Lee
+
+This product includes materials derived from:
+
+  harness - Agent Team & Skill Architect
+  Copyright (c) revfactory (https://github.com/revfactory/harness)
+  Licensed under the Apache License, Version 2.0
+  https://www.apache.org/licenses/LICENSE-2.0
+
+  Modified files:
+  - skills/aidlc-harness/references/architecture-patterns.md
+  - skills/aidlc-harness/references/orchestrator-template.md
+  - skills/aidlc-harness/references/skill-writing-guide.md
+  - skills/aidlc-harness/references/qa-agent-guide.md
+  - skills/aidlc-harness/references/team-examples.md
+
+  Changes: AIDLC 방법론 맥락에 맞게 수정, 요약, AIDLC 프로젝트 예시 추가
