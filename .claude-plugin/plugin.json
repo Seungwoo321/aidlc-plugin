@@ -1,0 +1,18 @@
+{
+  "name": "aidlc",
+  "description": "AI-DLC 방법론 통합 플러그인. 프로젝트 컨셉 정의(aidlc-init), 도메인 에이전트 생성(aidlc-harness), 팀 구성 및 볼트 실행(aidlc-team)을 하나의 파이프라인으로 제공합니다.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Seungwoo Lee",
+    "url": "https://github.com/Seungwoo321"
+  },
+  "license": "MIT",
+  "keywords": [
+    "aidlc",
+    "ai-dlc",
+    "agent-team",
+    "harness",
+    "bolt-cycle",
+    "methodology"
+  ]
+}
