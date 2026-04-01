@@ -1,12 +1,19 @@
 {
   "$schema": "https://code.claude.com/schemas/marketplace.json",
-  "name": "AIDLC Plugin Marketplace",
+  "name": "aidlc-marketplace",
+  "owner": {
+    "name": "Seungwoo Lee",
+    "url": "https://github.com/Seungwoo321"
+  },
   "plugins": [
     {
       "name": "aidlc",
       "description": "AI-DLC 방법론 통합 플러그인. 컨셉 정의(aidlc-init), 도메인 에이전트 생성(aidlc-harness), 팀 구성 및 볼트 실행(aidlc-team)",
       "version": "1.0.0",
-      "source": "https://github.com/Seungwoo321/aidlc-plugin"
+      "source": {
+        "type": "github",
+        "url": "https://github.com/Seungwoo321/aidlc-plugin"
+      }
     }
   ]
 }
