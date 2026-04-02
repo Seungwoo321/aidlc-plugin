@@ -1,3 +1,12 @@
+<!--
+  Copyright (c) revfactory (https://github.com/revfactory/harness)
+  Licensed under the Apache License, Version 2.0
+  https://www.apache.org/licenses/LICENSE-2.0
+
+  Modified by Seungwoo Lee for AIDLC Plugin.
+  Changes: AIDLC 방법론 맥락에 맞게 수정, 요약, AIDLC 프로젝트 예시 추가
+-->
+
 # 스킬 작성 가이드
 
 > 출처: revfactory/harness (Apache-2.0)
