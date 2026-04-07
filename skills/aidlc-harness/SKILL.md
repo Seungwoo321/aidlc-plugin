@@ -55,6 +55,20 @@ aidlc-init 산출물을 기반으로 작업 계획, 폴더 구조, 도메인 에
     ├── construction/
     └── operations/
 ```
+
+완료 메시지:
+```
+AIDLC 하네스 구성이 완료되었습니다.
+
+생성된 산출물:
+- docs/aidlc-docs_{주제}/plan.md (작업 계획)
+- docs/aidlc-docs_{주제}/harness-report.md (하네스 구성 보고서)
+- .claude/agents/ (도메인 에이전트 {N}개)
+- .claude/skills/ (도메인 스킬, 해당 시)
+
+다음 단계:
+/aidlc-run을 실행하여 에이전트 팀으로 볼트 사이클을 시작하세요.
+```
 </output_contract>
 
 <execution>
@@ -76,11 +90,11 @@ aidlc-init 산출물을 기반으로 작업 계획, 폴더 구조, 도메인 에
    ↓
 6. Phase 5: 도메인 스킬 생성 (필요 시)
    ↓
-7. Phase 6: 오케스트레이션 설정
+7. Phase 6: 오케스트레이션 설정 + 하네스 보고서 생성
    ↓
 8. Phase 7: 검증
    ↓
-9. 하네스 보고서 생성
+9. 완료 → /aidlc-run으로 이어감
 ```
 
 ---
@@ -91,11 +105,11 @@ aidlc-init 산출물을 기반으로 작업 계획, 폴더 구조, 도메인 에
 
 **반드시 Phase 1 시작 전에** 다음 레퍼런스를 모두 읽고 이해한다:
 
-1. `references/architecture-patterns.md` — 실행 모드 선택, 6가지 아키텍처 패턴, 에이전트 분리 기준, 에이전트 정의 구조
-2. `references/team-examples.md` — 프로젝트 유형별 팀 구성 예시 (에이전트 수, 패턴 선택 근거)
-3. `references/qa-agent-guide.md` — QA 에이전트 설계 원칙, 통합 정합성 검증 체크리스트
-4. `references/orchestrator-template.md` — 오케스트레이션 템플릿 (에이전트 팀 / 서브 에이전트)
-5. `references/skill-writing-guide.md` — 스킬 작성법, Progressive Disclosure, Why-First 원칙
+1. `${CLAUDE_SKILL_DIR}/references/architecture-patterns.md` — 실행 모드 선택, 6가지 아키텍처 패턴, 에이전트 분리 기준, 에이전트 정의 구조
+2. `${CLAUDE_SKILL_DIR}/references/team-examples.md` — 프로젝트 유형별 팀 구성 예시 (에이전트 수, 패턴 선택 근거)
+3. `${CLAUDE_SKILL_DIR}/references/qa-agent-guide.md` — QA 에이전트 설계 원칙, 통합 정합성 검증 체크리스트
+4. `${CLAUDE_SKILL_DIR}/references/orchestrator-template.md` — 오케스트레이션 템플릿 (에이전트 팀 / 서브 에이전트)
+5. `${CLAUDE_SKILL_DIR}/references/skill-writing-guide.md` — 스킬 작성법, Progressive Disclosure, Why-First 원칙
 
 이 레퍼런스들은 Phase 3~6에서 설계 판단의 근거로 사용된다. 읽지 않고 진행하면 에이전트 수가 부족하거나 팀 구조가 빈약해진다.
 
@@ -104,7 +118,7 @@ aidlc-init 산출물을 기반으로 작업 계획, 폴더 구조, 도메인 에
 다음 파일들을 읽는다:
 - `docs/aidlc-docs_{주제}/project-goal-report.md`
 - `docs/aidlc-docs_{주제}/application-approach-report.md`
-- `docs/aidlc-docs_{주제}/plan.md` (있는 경우)
+- `docs/aidlc-docs_{주제}/plan.md` (하네스 재실행 시에만 존재)
 - `CLAUDE.md` (프로젝트 지침)
 
 ### 1-2. 기존 에이전트/스킬 확인
@@ -172,12 +186,12 @@ AskUserQuestion으로 작업 계획을 제안한다:
 ## Phase 3: 팀 아키텍처 설계
 
 **필수 참조:**
-- `references/architecture-patterns.md` — 패턴 선택, 에이전트 분리 기준
-- `references/team-examples.md` — 프로젝트 유형별 에이전트 구성 예시 (보통 4개 이상)
+- `${CLAUDE_SKILL_DIR}/references/architecture-patterns.md` — 패턴 선택, 에이전트 분리 기준
+- `${CLAUDE_SKILL_DIR}/references/team-examples.md` — 프로젝트 유형별 에이전트 구성 예시 (보통 4개 이상)
 
 ### 3-1. 실행 모드 선택
 
-`references/architecture-patterns.md`의 의사결정 트리를 참조하여 선택한다.
+`${CLAUDE_SKILL_DIR}/references/architecture-patterns.md`의 의사결정 트리를 참조하여 선택한다.
 
 | 모드 | 조건 |
 |------|------|
@@ -186,7 +200,7 @@ AskUserQuestion으로 작업 계획을 제안한다:
 
 ### 3-2. 아키텍처 패턴 선택
 
-`references/architecture-patterns.md`의 6가지 패턴에서 선택한다:
+`${CLAUDE_SKILL_DIR}/references/architecture-patterns.md`의 6가지 패턴에서 선택한다:
 
 1. **Pipeline** — 순차적 단계 의존
 2. **Fan-out/Fan-in** — 병렬 처리 후 통합
@@ -208,7 +222,7 @@ AskUserQuestion으로 작업 계획을 제안한다:
 
 ### 3-4. 에이전트 수 가이드라인
 
-`references/team-examples.md`의 예시를 참조한다. 대부분의 프로젝트는 도메인 에이전트 3~5개가 적정이다.
+`${CLAUDE_SKILL_DIR}/references/team-examples.md`의 예시를 참조한다. 대부분의 프로젝트는 도메인 에이전트 3~5개가 적정이다.
 
 | 프로젝트 규모 | 도메인 에이전트 수 | 예시 |
 |-------------|----------------|------|
@@ -216,9 +230,9 @@ AskUserQuestion으로 작업 계획을 제안한다:
 | 중규모 (다중 모듈) | 3~5개 | 프론트 + API + 콘텐츠 + QA |
 | 대규모 (모노레포/MSA) | 5~7개 | 서비스별 전문가 + 통합 QA |
 
-**QA/검증 에이전트는 거의 항상 필요하다.** `references/qa-agent-guide.md`의 통합 정합성 검증 방법론을 참조하여, 프로젝트에 맞는 QA 에이전트를 설계한다. "필요 시"가 아니라 **기본 포함**으로 간주한다.
+**QA/검증 에이전트는 거의 항상 필요하다.** `${CLAUDE_SKILL_DIR}/references/qa-agent-guide.md`의 통합 정합성 검증 방법론을 참조하여, 프로젝트에 맞는 QA 에이전트를 설계한다. "필요 시"가 아니라 **기본 포함**으로 간주한다.
 
-### 3-6. 고정 에이전트와의 관계
+### 3-5. 고정 에이전트와의 관계
 
 플러그인에 내장된 고정 에이전트:
 - **thinking-partner**: 구조 분석, 방향성 논의, 의사결정 지원
@@ -226,7 +240,7 @@ AskUserQuestion으로 작업 계획을 제안한다:
 
 이 두 에이전트는 생성하지 않는다. 도메인 에이전트가 이들과 어떻게 협업할지를 설계한다.
 
-### 3-7. 사용자 승인
+### 3-6. 사용자 승인
 
 AskUserQuestion으로 팀 아키텍처를 제안한다:
 ```
@@ -252,12 +266,12 @@ AskUserQuestion으로 팀 아키텍처를 제안한다:
 Phase 3에서 승인된 구성에 따라 `.claude/agents/{name}.md` 파일을 생성한다.
 
 **필수 참조:**
-- `references/architecture-patterns.md` — 에이전트 정의 필수 구조, 스킬 ↔ 에이전트 연결 방식
-- `references/qa-agent-guide.md` — QA 에이전트의 검증 체크리스트, 통합 정합성 검증 방법론을 에이전트 정의에 반영
+- `${CLAUDE_SKILL_DIR}/references/architecture-patterns.md` — 에이전트 정의 필수 구조, 스킬 ↔ 에이전트 연결 방식
+- `${CLAUDE_SKILL_DIR}/references/qa-agent-guide.md` — QA 에이전트의 검증 체크리스트, 통합 정합성 검증 방법론을 에이전트 정의에 반영
 
 ### 에이전트 정의 필수 구조
 
-`references/architecture-patterns.md`의 에이전트 정의 구조를 따른다:
+`${CLAUDE_SKILL_DIR}/references/architecture-patterns.md`의 에이전트 정의 구조를 따른다:
 
 ```markdown
 ---
@@ -313,7 +327,7 @@ model: opus
 
 ## Phase 5: 도메인 스킬 생성 (필요 시)
 
-**필수 참조:** `references/skill-writing-guide.md` — Description 작성법, Why-First 원칙, Progressive Disclosure, 스크립트 번들링 기준
+**필수 참조:** `${CLAUDE_SKILL_DIR}/references/skill-writing-guide.md` — Description 작성법, Why-First 원칙, Progressive Disclosure, 스크립트 번들링 기준
 
 에이전트가 반복적으로 사용할 절차적 지식이 있으면 스킬로 분리한다.
 
@@ -327,22 +341,22 @@ model: opus
 
 ### Progressive Disclosure 적용
 
-`references/skill-writing-guide.md`를 참조한다:
+`${CLAUDE_SKILL_DIR}/references/skill-writing-guide.md`를 참조한다:
 
-- 스킬 본문 < 500줄. 초과 시 `references/`로 분리
+- 스킬 본문 < 500줄. 초과 시 `${CLAUDE_SKILL_DIR}/references/`로 분리
 - description은 "pushy"하게 작성 — 트리거 상황을 구체적으로 명시
 - 조건부 로드: 큰 reference는 필요할 때만 Read로 로드
 
 ### 스킬 생성 시 참고
 
-- `references/skill-writing-guide.md` — 스킬 작성법
-- `references/qa-agent-guide.md` — QA 에이전트가 필요한 경우
+- `${CLAUDE_SKILL_DIR}/references/skill-writing-guide.md` — 스킬 작성법
+- `${CLAUDE_SKILL_DIR}/references/qa-agent-guide.md` — QA 에이전트가 필요한 경우
 
 ---
 
 ## Phase 6: 오케스트레이션 설정
 
-**필수 참조:** `references/orchestrator-template.md` — 에이전트 팀 모드 / 서브 에이전트 모드 템플릿, 데이터 흐름 설계, 에러 핸들링 전략
+**필수 참조:** `${CLAUDE_SKILL_DIR}/references/orchestrator-template.md` — 에이전트 팀 모드 / 서브 에이전트 모드 템플릿, 데이터 흐름 설계, 에러 핸들링 전략
 
 Phase 3에서 선택한 실행 모드에 맞는 템플릿(A: 에이전트 팀 / B: 서브 에이전트)을 기반으로, aidlc-run이 생성된 에이전트를 조율할 수 있도록 harness-report.md에 오케스트레이션 설계를 기록한다.
 
@@ -378,7 +392,6 @@ Phase 3에서 선택한 실행 모드에 맞는 템플릿(A: 에이전트 팀 / 
 | {name} | `.claude/skills/{name}/` | {용도} |
 
 ## 오케스트레이션 설계
-- 실행 모드: {에이전트 팀 / 서브 에이전트}
 - 데이터 흐름 다이어그램
 - Phase별 팀원 구성과 작업 분배
 - 에러 핸들링 전략
@@ -398,7 +411,7 @@ Phase 3에서 선택한 실행 모드에 맞는 템플릿(A: 에이전트 팀 / 
 - [ ] plan.md가 생성되고 체크박스 형식의 태스크를 포함
 - [ ] inception/, construction/, operations/ 폴더가 생성됨
 - [ ] 모든 에이전트 파일이 `.claude/agents/`에 존재
-- [ ] 에이전트 정의에 필수 섹션(역할, 원칙, I/O, 통신, 에러)이 포함
+- [ ] 에이전트 정의에 필수 섹션(핵심 역할, AI-DLC 원칙 준수, 작업 원칙, I/O 프로토콜, 팀 통신 프로토콜, 에러 핸들링, 협업)이 포함
 - [ ] 모든 에이전트에 `model: opus` 명시
 - [ ] 고정 에이전트(thinking-partner, genius-thinker)를 중복 생성하지 않음
 - [ ] 스킬이 있으면 description이 구체적이고 트리거 조건이 명확

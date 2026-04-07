@@ -6,8 +6,8 @@
 
 ## 참조 백서
 
-- 원본 AI-DLC 백서 (`.claude/docs/ai-dlc-whitepaper-ko.md`)
-- 확장 AI-DLC 백서 (`.claude/docs/ai-dlc-extended-whitepaper.md`)
+- 원본 AI-DLC 백서 (`${CLAUDE_SKILL_DIR}/docs/ai-dlc-whitepaper-ko.md`)
+- 확장 AI-DLC 백서 (`${CLAUDE_SKILL_DIR}/docs/ai-dlc-extended-whitepaper.md`)
 
 ---
 
@@ -18,9 +18,9 @@
 
 먼저 다음 백서를 읽고 AI-DLC 방법론을 이해합니다.
 
-1. 원본 AI-DLC 백서 (`.claude/docs/ai-dlc-whitepaper-ko.md`)를 읽고 AI-DLC의 핵심 철학을 이해합니다. 대화 방향의 역전, 볼트 사이클, 계획-승인-실행 패턴이 무엇인지 파악합니다.
+1. 원본 AI-DLC 백서 (`${CLAUDE_SKILL_DIR}/docs/ai-dlc-whitepaper-ko.md`)를 읽고 AI-DLC의 핵심 철학을 이해합니다. 대화 방향의 역전, 볼트 사이클, 계획-승인-실행 패턴이 무엇인지 파악합니다.
 
-2. 확장 AI-DLC 백서 (`.claude/docs/ai-dlc-extended-whitepaper.md`)를 읽고 프로젝트 분석 기반 적용 방식을 이해합니다. AI-DLC는 특정 방법론을 강제하지 않으며, 프로젝트 특성에 맞는 접근방식을 선택해야 함을 파악합니다.
+2. 확장 AI-DLC 백서 (`${CLAUDE_SKILL_DIR}/docs/ai-dlc-extended-whitepaper.md`)를 읽고 프로젝트 분석 기반 적용 방식을 이해합니다. AI-DLC는 특정 방법론을 강제하지 않으며, 프로젝트 특성에 맞는 접근방식을 선택해야 함을 파악합니다.
 
 백서 이해가 완료되면, AskUserQuestion 툴을 사용하여 프로젝트에 대한 기본 정보를 수집합니다. 작업 주제, 프로젝트 상태(신규/리팩토링/기능추가), 프로젝트 설명을 질문합니다.
 

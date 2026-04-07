@@ -1,9 +1,10 @@
 ---
 name: aidlc-init
-description: AI-DLC 방법론 프로젝트 분석 도구. 프로젝트 정보 수집 → 목적/목표 보고서 생성 → 적용방식 보고서 생성을 수행합니다. Use when user mentions "aidlc", "AI-DLC", "프로젝트 초기화", "방법론 설정", "볼트 사이클", or asks to "initialize project", "setup AI-DLC", "프로젝트 셋팅", "새 프로젝트 시작".
+description: AI-DLC 방법론 프로젝트 분석 도구. 프로젝트 정보 수집 → 목적/목표 보고서 → 적용방식 보고서 생성. Use when user mentions "aidlc", "AI-DLC", "프로젝트 초기화", "방법론 설정", or asks to "initialize project", "setup AI-DLC", "프로젝트 셋팅".
+user-invocable: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, AskUserQuestion
 metadata:
-  author: Seungwoo, Lee
+  author: Seungwoo Lee
   version: 2.0.0
 ---
 
@@ -54,11 +55,11 @@ AI-DLC 분석이 완료되었습니다.
 <reference_docs>
 실행 전 반드시 다음 백서들을 읽고 이해해야 합니다:
 
-1. **원본 AI-DLC 백서** - `.claude/skills/aidlc-init/docs/ai-dlc-whitepaper-ko.md`
+1. **원본 AI-DLC 백서** - `${CLAUDE_SKILL_DIR}/docs/ai-dlc-whitepaper-ko.md`
    - Raja SP(AWS)의 AI-DLC 방법론 정의
    - 핵심 철학: 대화 방향의 역전, 볼트 사이클, 계획-승인-실행 패턴
 
-2. **확장 AI-DLC 백서** - `.claude/skills/aidlc-init/docs/ai-dlc-extended-whitepaper.md`
+2. **확장 AI-DLC 백서** - `${CLAUDE_SKILL_DIR}/docs/ai-dlc-extended-whitepaper.md`
    - 프로젝트 분석 기반 적용 방식
    - 다양한 설계 방법론 지원
 </reference_docs>
@@ -85,7 +86,7 @@ AI-DLC 분석이 완료되었습니다.
 
 ## 1단계: 정보 수집
 
-**.claude/skills/aidlc-init/templates/01-project-goal.md** 프롬프트의 1단계를 실행합니다.
+`${CLAUDE_SKILL_DIR}/templates/01-project-goal.md` 프롬프트의 1단계를 실행합니다.
 
 수집 항목:
 - 작업 주제 (폴더명에 사용: `docs/aidlc-docs_{주제}/`)
@@ -97,7 +98,7 @@ AI-DLC 분석이 완료되었습니다.
 
 ## 2단계: 프로젝트 목적/목표 보고서 생성
 
-**.claude/skills/aidlc-init/templates/01-project-goal.md** 프롬프트의 2단계를 실행합니다.
+`${CLAUDE_SKILL_DIR}/templates/01-project-goal.md` 프롬프트의 2단계를 실행합니다.
 
 수집된 정보를 바탕으로 프로젝트의 목적과 목표를 정리한 보고서를 생성합니다.
 
@@ -112,7 +113,7 @@ AI-DLC 분석이 완료되었습니다.
 
 ## 3단계: AI-DLC 적용방식 보고서 생성
 
-**.claude/skills/aidlc-init/templates/02-application-approach.md** 프롬프트를 실행합니다.
+`${CLAUDE_SKILL_DIR}/templates/02-application-approach.md` 프롬프트를 실행합니다.
 
 프로젝트 특성을 분석하고, 적합한 설계 방법론과 아키텍처 패턴을 선정합니다.
 
