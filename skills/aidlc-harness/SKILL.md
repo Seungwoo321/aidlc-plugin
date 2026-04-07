@@ -87,6 +87,18 @@ aidlc-init 산출물을 기반으로 작업 계획, 폴더 구조, 도메인 에
 
 ## Phase 1: 도메인 분석
 
+### 1-0. 하네스 레퍼런스 로드
+
+**반드시 Phase 1 시작 전에** 다음 레퍼런스를 모두 읽고 이해한다:
+
+1. `references/architecture-patterns.md` — 실행 모드 선택, 6가지 아키텍처 패턴, 에이전트 분리 기준, 에이전트 정의 구조
+2. `references/team-examples.md` — 프로젝트 유형별 팀 구성 예시 (에이전트 수, 패턴 선택 근거)
+3. `references/qa-agent-guide.md` — QA 에이전트 설계 원칙, 통합 정합성 검증 체크리스트
+4. `references/orchestrator-template.md` — 오케스트레이션 템플릿 (에이전트 팀 / 서브 에이전트)
+5. `references/skill-writing-guide.md` — 스킬 작성법, Progressive Disclosure, Why-First 원칙
+
+이 레퍼런스들은 Phase 3~6에서 설계 판단의 근거로 사용된다. 읽지 않고 진행하면 에이전트 수가 부족하거나 팀 구조가 빈약해진다.
+
 ### 1-1. AIDLC 보고서 수집
 
 다음 파일들을 읽는다:
@@ -159,6 +171,10 @@ AskUserQuestion으로 작업 계획을 제안한다:
 
 ## Phase 3: 팀 아키텍처 설계
 
+**필수 참조:**
+- `references/architecture-patterns.md` — 패턴 선택, 에이전트 분리 기준
+- `references/team-examples.md` — 프로젝트 유형별 에이전트 구성 예시 (보통 4개 이상)
+
 ### 3-1. 실행 모드 선택
 
 `references/architecture-patterns.md`의 의사결정 트리를 참조하여 선택한다.
@@ -190,7 +206,19 @@ AskUserQuestion으로 작업 계획을 제안한다:
 | 컨텍스트 | 컨텍스트 부담이 크면 분리 | 가볍고 빠르면 통합 |
 | 재사용성 | 다른 팀에서도 쓰면 분리 | 이 팀에서만 쓰면 통합 고려 |
 
-### 3-4. 고정 에이전트와의 관계
+### 3-4. 에이전트 수 가이드라인
+
+`references/team-examples.md`의 예시를 참조한다. 대부분의 프로젝트는 도메인 에이전트 3~5개가 적정이다.
+
+| 프로젝트 규모 | 도메인 에이전트 수 | 예시 |
+|-------------|----------------|------|
+| 소규모 (단일 모듈) | 2~3개 | 구현 + QA |
+| 중규모 (다중 모듈) | 3~5개 | 프론트 + API + 콘텐츠 + QA |
+| 대규모 (모노레포/MSA) | 5~7개 | 서비스별 전문가 + 통합 QA |
+
+**QA/검증 에이전트는 거의 항상 필요하다.** `references/qa-agent-guide.md`의 통합 정합성 검증 방법론을 참조하여, 프로젝트에 맞는 QA 에이전트를 설계한다. "필요 시"가 아니라 **기본 포함**으로 간주한다.
+
+### 3-6. 고정 에이전트와의 관계
 
 플러그인에 내장된 고정 에이전트:
 - **thinking-partner**: 구조 분석, 방향성 논의, 의사결정 지원
@@ -198,7 +226,7 @@ AskUserQuestion으로 작업 계획을 제안한다:
 
 이 두 에이전트는 생성하지 않는다. 도메인 에이전트가 이들과 어떻게 협업할지를 설계한다.
 
-### 3-5. 사용자 승인
+### 3-7. 사용자 승인
 
 AskUserQuestion으로 팀 아키텍처를 제안한다:
 ```
@@ -222,6 +250,10 @@ AskUserQuestion으로 팀 아키텍처를 제안한다:
 ## Phase 4: 에이전트 정의 생성
 
 Phase 3에서 승인된 구성에 따라 `.claude/agents/{name}.md` 파일을 생성한다.
+
+**필수 참조:**
+- `references/architecture-patterns.md` — 에이전트 정의 필수 구조, 스킬 ↔ 에이전트 연결 방식
+- `references/qa-agent-guide.md` — QA 에이전트의 검증 체크리스트, 통합 정합성 검증 방법론을 에이전트 정의에 반영
 
 ### 에이전트 정의 필수 구조
 
@@ -281,6 +313,8 @@ model: opus
 
 ## Phase 5: 도메인 스킬 생성 (필요 시)
 
+**필수 참조:** `references/skill-writing-guide.md` — Description 작성법, Why-First 원칙, Progressive Disclosure, 스크립트 번들링 기준
+
 에이전트가 반복적으로 사용할 절차적 지식이 있으면 스킬로 분리한다.
 
 ### 스킬 vs 에이전트 구분
@@ -308,7 +342,9 @@ model: opus
 
 ## Phase 6: 오케스트레이션 설정
 
-`references/orchestrator-template.md`를 참조하여, aidlc-run이 생성된 에이전트를 활용할 수 있도록 설정한다.
+**필수 참조:** `references/orchestrator-template.md` — 에이전트 팀 모드 / 서브 에이전트 모드 템플릿, 데이터 흐름 설계, 에러 핸들링 전략
+
+Phase 3에서 선택한 실행 모드에 맞는 템플릿(A: 에이전트 팀 / B: 서브 에이전트)을 기반으로, aidlc-run이 생성된 에이전트를 조율할 수 있도록 harness-report.md에 오케스트레이션 설계를 기록한다.
 
 ### 하네스 보고서 생성
 
@@ -340,6 +376,12 @@ model: opus
 | 스킬 | 경로 | 용도 |
 |------|------|------|
 | {name} | `.claude/skills/{name}/` | {용도} |
+
+## 오케스트레이션 설계
+- 실행 모드: {에이전트 팀 / 서브 에이전트}
+- 데이터 흐름 다이어그램
+- Phase별 팀원 구성과 작업 분배
+- 에러 핸들링 전략
 
 ## aidlc-run 연동
 - 팀 구성 시 참조할 에이전트 목록
