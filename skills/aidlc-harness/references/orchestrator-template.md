@@ -9,9 +9,9 @@
 
 # 오케스트레이터 스킬 템플릿
 
-> 출처: revfactory/harness (Apache-2.0), AIDLC aidlc-team 연동용
+> 출처: revfactory/harness (Apache-2.0), AIDLC aidlc-run 연동용
 
-오케스트레이터는 팀 전체를 조율하는 상위 스킬이다. aidlc-team이 이 템플릿을 참조하여 도메인 에이전트를 조율한다.
+오케스트레이터는 팀 전체를 조율하는 상위 스킬이다. aidlc-run이 이 템플릿을 참조하여 도메인 에이전트를 조율한다.
 
 ---
 

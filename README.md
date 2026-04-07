@@ -1,18 +1,18 @@
 # AIDLC Plugin
 
-AI-DLC 방법론을 Claude Code에 적용하는 플러그인입니다. 프로젝트 컨셉 정의부터 도메인 에이전트 생성, 팀 구성 및 볼트 사이클 실행까지 하나의 파이프라인으로 제공합니다.
+AI-DLC 방법론을 Claude Code에 적용하는 플러그인입니다. 프로젝트 분석부터 도메인 에이전트 생성, 볼트 사이클 실행까지 하나의 파이프라인으로 제공합니다.
 
 ## 파이프라인
 
 ```
-/aidlc-init → /aidlc-harness → /aidlc-team
+/aidlc-init → /aidlc-harness → /aidlc-run
 ```
 
-| 단계 | 스킬 | 설명 |
-|------|------|------|
-| 1 | `/aidlc-init` | 프로젝트 정보 수집 → 목적/목표 보고서 → 적용방식 보고서 생성 |
-| 2 | `/aidlc-harness` | 보고서 기반으로 도메인 특화 에이전트 및 스킬 생성 |
-| 3 | `/aidlc-team` | 에이전트 팀 구성 및 볼트 사이클 실행 |
+| 단계 | 스킬 | 역할 | 설명 |
+|------|------|------|------|
+| 1 | `/aidlc-init` | 분석 (What) | 프로젝트 정보 수집 → 목적/목표 보고서 → 적용방식 보고서 생성 |
+| 2 | `/aidlc-harness` | 설계+구성 (How) | 작업 계획(plan.md), 폴더 구조, 도메인 에이전트/스킬 생성 |
+| 3 | `/aidlc-run` | 실행 (Do) | 에이전트 팀으로 plan.md 기반 볼트 사이클 실행 |
 
 ## 내장 에이전트
 
@@ -26,6 +26,7 @@ AI-DLC 방법론을 Claude Code에 적용하는 플러그인입니다. 프로젝
 ## 구조
 
 ```
+# 플러그인 구조
 .claude-plugin/
   plugin.json
   marketplace.json
@@ -40,8 +41,23 @@ skills/
   aidlc-harness/
     SKILL.md
     references/              # 아키텍처 패턴, 스킬 작성 가이드 등
-  aidlc-team/
+  aidlc-run/
     SKILL.md
+```
+
+### 산출물 구조 (대상 프로젝트에 생성됨)
+
+```
+docs/aidlc-docs_{주제}/
+  project-goal-report.md          # aidlc-init이 생성
+  application-approach-report.md  # aidlc-init이 생성
+  plan.md                         # aidlc-harness가 생성
+  harness-report.md               # aidlc-harness가 생성
+  inception/                      # aidlc-harness가 생성
+  construction/
+  operations/
+.claude/agents/                   # aidlc-harness가 생성 (도메인 에이전트)
+.claude/skills/                   # aidlc-harness가 생성 (필요 시)
 ```
 
 ## AI-DLC 핵심 원칙

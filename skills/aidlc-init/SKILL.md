@@ -1,21 +1,21 @@
 ---
 name: aidlc-init
-description: AI-DLC 방법론 초기 셋팅 자동화 도구. 프로젝트 정보 수집 → 목적/목표 보고서 생성 → 적용방식 보고서 생성 → 프롬프트 생성 순으로 진행합니다. Use when user mentions "aidlc", "AI-DLC", "프로젝트 초기화", "방법론 설정", "볼트 사이클", or asks to "initialize project", "setup AI-DLC", "프로젝트 셋팅", "새 프로젝트 시작".
+description: AI-DLC 방법론 프로젝트 분석 도구. 프로젝트 정보 수집 → 목적/목표 보고서 생성 → 적용방식 보고서 생성을 수행합니다. Use when user mentions "aidlc", "AI-DLC", "프로젝트 초기화", "방법론 설정", "볼트 사이클", or asks to "initialize project", "setup AI-DLC", "프로젝트 셋팅", "새 프로젝트 시작".
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, AskUserQuestion
 metadata:
   author: Seungwoo, Lee
-  version: 1.0.0
+  version: 2.0.0
 ---
 
 # AI-DLC Initializer
 
-AI-DLC 방법론 초기 셋팅 자동화 도구
+AI-DLC 방법론 프로젝트 분석 도구
 
 <role>
-이 스킬은 AI-DLC 방법론을 프로젝트에 적용하기 위한 초기 셋팅을 수행합니다.
+이 스킬은 AI-DLC 방법론을 프로젝트에 적용하기 위한 분석과 보고서 생성을 수행합니다.
 
 핵심 원칙:
-- 3단계의 셋팅 프롬프트를 순차적으로 실행합니다
+- 2단계의 보고서를 순차적으로 생성합니다
 - 각 단계에서 사용자의 검토와 피드백을 받습니다
 - 참조 백서를 먼저 읽고 이해한 후 실행합니다
 </role>
@@ -28,35 +28,26 @@ AI-DLC 방법론 초기 셋팅 자동화 도구
 - 작업 주제 (폴더명에 사용: `docs/aidlc-docs_{주제}/`)
 - 프로젝트 상태 (신규 프로젝트 / 리팩토링 / 기능 추가)
 - 프로젝트 설명 (목적, 핵심 기능, 타겟 사용자, 기술 스택, 특별 요구사항)
-- 프롬프트 패턴 선택 (태그 패턴 / Claude Code 패턴)
 </input_contract>
 
 <output_contract>
 최종 산출물:
 ```
 docs/aidlc-docs_{주제}/
-├── project-goal-report.md              # 보고서 1
-├── application-approach-report.md      # 보고서 2
-├── plan.md                              # 작업 계획 (체크박스)
-├── prompts/                             # AI-DLC 프롬프트
-│   ├── README.md                        # 프롬프트 사용 가이드
-│   └── *.md                             # 프로젝트 특성에 맞게 생성
-├── inception/
-├── construction/
-└── operations/
+├── project-goal-report.md              # 보고서 1: 프로젝트 목적/목표
+└── application-approach-report.md      # 보고서 2: AI-DLC 적용방식
 ```
 
 완료 메시지:
 ```
-AI-DLC 초기화가 완료되었습니다.
+AI-DLC 분석이 완료되었습니다.
 
-생성된 구조:
-- docs/aidlc-docs_{주제}/
+생성된 보고서:
+- docs/aidlc-docs_{주제}/project-goal-report.md
+- docs/aidlc-docs_{주제}/application-approach-report.md
 
 다음 단계:
-1. prompts/README.md에서 프롬프트 사용 가이드 확인
-2. 첫 번째 프롬프트부터 순차 실행
-3. plan.md의 체크박스를 따라 진행
+/aidlc-harness를 실행하여 보고서 기반으로 플랜, 폴더 구조, 에이전트/스킬을 생성하세요.
 ```
 </output_contract>
 
@@ -82,7 +73,6 @@ AI-DLC 초기화가 완료되었습니다.
    - 작업 주제
    - 프로젝트 상태 (신규/리팩토링/기능추가)
    - 프로젝트 설명
-   - 프롬프트 패턴 선택 (태그 패턴 / Claude Code 패턴)
    ↓
 3. [보고서 1] 프로젝트 목적/목표 보고서 생성
    → 사용자 검토 & 피드백
@@ -90,9 +80,7 @@ AI-DLC 초기화가 완료되었습니다.
 4. [보고서 2] AI-DLC 적용방식 보고서 생성
    → 사용자 검토 & 피드백
    ↓
-5. 폴더 생성 + AI-DLC 프롬프트 생성
-   ↓
-6. 준비 완료
+5. 완료 → /aidlc-harness로 이어감
 ```
 
 ## 1단계: 정보 수집
@@ -106,9 +94,6 @@ AI-DLC 초기화가 완료되었습니다.
   - 리팩토링: 기존 프로젝트 개선
   - 기능 추가: 기존 프로젝트에 새 기능 개발
 - 프로젝트 설명: 목적, 핵심 기능, 타겟 사용자, 기술 스택, 특별 요구사항
-- 프롬프트 패턴 선택:
-  - 태그 패턴: `[Question]`/`[Answer]` - 범용 AI 도구에서 사용 가능
-  - Claude Code 패턴: `AskUserQuestion` - Claude Code CLI 전용
 
 ## 2단계: 프로젝트 목적/목표 보고서 생성
 
@@ -142,47 +127,20 @@ AI-DLC 초기화가 완료되었습니다.
 **중요:** 코드 예시 없이 보고서로서의 역할만 수행합니다.
 
 사용자 검토 후 승인 또는 피드백을 받습니다.
-
-## 4단계: 폴더 생성 및 프롬프트 생성
-
-**.claude/skills/aidlc-init/templates/03-prompt-generation.md** 프롬프트를 실행합니다.
-
-프롬프트는 선택된 패턴(태그 패턴 또는 Claude Code 패턴)에 맞게 생성됩니다.
 </execution>
-
-<prompt_patterns>
-## 태그 패턴 (범용)
-
-태그 패턴은 ChatGPT, Gemini, Claude 웹 등 모든 AI 도구에서 사용할 수 있는 범용 형식입니다. 프롬프트를 복사하여 다른 환경에서도 동일하게 실행할 수 있어 이식성이 높습니다.
-
-이 패턴은 `[Question]`과 `[Answer]` 태그로 질문과 응답 영역을 명확히 구분합니다. AI가 질문을 제시하면 사용자가 `[Answer]` 태그 안에 응답을 작성하고, 이를 다시 AI에게 전달하는 방식으로 대화가 진행됩니다. 텍스트 기반의 단순한 구조이므로 어떤 AI 도구에서도 해석이 가능합니다.
-
-단점은 매번 복사-붙여넣기가 필요하고, 선택형 질문의 경우 사용자가 직접 텍스트로 옵션을 선택해야 한다는 점입니다.
-
-## Claude Code 패턴 (Claude Code CLI 전용)
-
-Claude Code 패턴은 Claude Code CLI 환경에서만 사용 가능한 전용 형식입니다. `AskUserQuestion` 툴을 활용하여 터미널에서 직접 사용자와 상호작용합니다.
-
-이 패턴의 장점은 선택형 UI를 제공한다는 것입니다. 사용자는 텍스트를 직접 입력하는 대신 화살표 키로 옵션을 선택할 수 있어 입력 오류가 줄어들고 작업 속도가 빨라집니다. 또한 여러 질문을 한 번에 묶어서 제시할 수 있고, 다중 선택(multiSelect) 옵션도 지원합니다.
-
-단점은 Claude Code CLI 환경에서만 동작하므로 다른 AI 도구로 이식할 수 없다는 점입니다. 프롬프트를 공유하거나 다른 환경에서 재사용해야 하는 경우에는 태그 패턴이 더 적합합니다.
-</prompt_patterns>
 
 <file_structure>
 ```
-aidlc-initializer/
-├── .claude/
-│   └── skills/
-│       └── aidlc-init/
-│           ├── SKILL.md                       # 스킬 정의
-│           ├── docs/
-│           │   ├── ai-dlc-whitepaper-ko.md        # 원본 AI-DLC 백서
-│           │   └── ai-dlc-extended-whitepaper.md  # 확장 AI-DLC 백서
-│           └── templates/
-│               ├── 01-project-goal.md             # 정보 수집 + 보고서 1 생성
-│               ├── 02-application-approach.md     # 보고서 2 생성
-│               └── 03-prompt-generation.md        # 폴더/프롬프트 생성
-└── README.md
+aidlc-plugin/
+├── skills/
+│   └── aidlc-init/
+│       ├── SKILL.md                       # 스킬 정의
+│       ├── docs/
+│       │   ├── ai-dlc-whitepaper-ko.md        # 원본 AI-DLC 백서
+│       │   └── ai-dlc-extended-whitepaper.md  # 확장 AI-DLC 백서
+│       └── templates/
+│           ├── 01-project-goal.md             # 정보 수집 + 보고서 1 생성
+│           └── 02-application-approach.md     # 보고서 2 생성
 ```
 </file_structure>
 
@@ -197,10 +155,10 @@ DO NOT:
 - 사용자 승인 없이 다음 단계로 넘어가지 않습니다
 - 적용방식 보고서에 코드 예시를 포함하지 않습니다
 - 기존 `docs/aidlc-docs_{주제}/` 폴더가 있을 때 확인 없이 덮어쓰지 않습니다
+- 폴더 구조, plan.md, 에이전트/스킬을 생성하지 않습니다 — 이는 `/aidlc-harness`의 역할입니다
 </constraints>
 
 <critical>
 - 각 보고서는 반드시 사용자 검토와 승인을 거쳐야 다음 단계로 진행합니다
 - 참조 백서의 AI-DLC 철학(대화 방향의 역전, 볼트 사이클, 계획-승인-실행 패턴)을 준수합니다
-- 프롬프트 패턴 선택에 따라 올바른 형식으로 프롬프트를 생성합니다
 </critical>
