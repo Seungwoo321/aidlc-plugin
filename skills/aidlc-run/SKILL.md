@@ -159,11 +159,14 @@ plan.md: - [ ] `@frontend-dev` Header 컴포넌트 구현
 
 #### 고정 에이전트 소환 (Inception / 설계 결정 시)
 
+고정 에이전트(thinking-partner, genius-thinker)는 플러그인에 내장된 에이전트 타입이므로 `subagent_type`에 직접 지정할 수 있다.
+
+**에이전트 팀 모드:**
 ```
 Agent:
   name: "thinker"
   team_name: "{팀이름}"
-  subagent_type: "thinking-partner"
+  subagent_type: "aidlc:thinking-partner"
   model: "opus"
   run_in_background: true
   prompt: |
@@ -180,7 +183,7 @@ Agent:
 Agent:
   name: "genius"
   team_name: "{팀이름}"
-  subagent_type: "genius-thinker"
+  subagent_type: "aidlc:genius-thinker"
   model: "opus"
   run_in_background: true
   prompt: |
@@ -191,6 +194,37 @@ Agent:
 
     AI-DLC 원칙에 따라 아이디어를 먼저 제시하고 Team Lead의 검증을 받으세요.
     분석 완료 후 team-lead에게 SendMessage로 결과를 전달하세요.
+```
+
+**서브 에이전트 모드:**
+```
+Agent:
+  name: "thinker"
+  subagent_type: "aidlc:thinking-partner"
+  model: "opus"
+  run_in_background: true
+  prompt: |
+    프로젝트: {프로젝트 경로}
+    AIDLC 문서: {docs 경로}
+    과제: {분석 주제}
+
+    AI-DLC 원칙에 따라 분석 결과를 먼저 제시하세요.
+    완료 후 결과를 반환하세요.
+```
+
+```
+Agent:
+  name: "genius"
+  subagent_type: "aidlc:genius-thinker"
+  model: "opus"
+  run_in_background: true
+  prompt: |
+    프로젝트: {프로젝트 경로}
+    AIDLC 문서: {docs 경로}
+    과제: {분석 주제}
+
+    AI-DLC 원칙에 따라 아이디어를 먼저 제시하세요.
+    완료 후 결과를 반환하세요.
 ```
 
 3자 분석(thinking-partner + genius-thinker + 도메인 분석 에이전트)은 반드시 병렬로 소환합니다.
